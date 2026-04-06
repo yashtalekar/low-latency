@@ -1,0 +1,13 @@
+# .clangd — config for the clangd language server (powers VS Code intellisense).
+# It reads compile_commands.json from the build dir for accurate completions.
+
+CompileFlags:
+  CompilationDatabase: build
+
+Diagnostics:
+  ClangTidy: true
+
+InlayHints:
+  Enabled: true
+  ParameterNames: true
+  DeducedTypes: true

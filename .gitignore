@@ -1,0 +1,25 @@
+# Build output
+build/
+
+# vcpkg installed packages (rebuilt from vcpkg.json)
+vcpkg_installed/
+
+# Editor
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.cache/
+
+# Environment / secrets
+.env
+.envrc
+
+# macOS
+.DS_Store
+
+# Compiled objects
+*.o
+*.obj
+*.a
+*.so
+*.dylib

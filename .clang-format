@@ -1,0 +1,26 @@
+# .clang-format — auto-formats your code on save (or via `make format`).
+# Based on Google style with a few tweaks for readability.
+
+BasedOnStyle: Google
+IndentWidth: 4
+ColumnLimit: 100
+
+# Put opening braces on the same line (K&R / Google style)
+BreakBeforeBraces: Attach
+
+# One argument per line if the call doesn't fit in ColumnLimit
+BinPackArguments: false
+BinPackParameters: false
+
+# Always use braces for if/for/while (prevents bugs)
+InsertBraces: true
+
+# Sort and group includes: project headers last
+SortIncludes: CaseSensitive
+IncludeBlocks: Regroup
+
+# Pointer/reference alignment: int* p  (not int *p)
+PointerAlignment: Left
+
+# Short functions on one line only if truly trivial
+AllowShortFunctionsOnASingleLine: Inline
