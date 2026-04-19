@@ -18,9 +18,12 @@
       "displayName": "Windows / Clang (LLVM)",
       "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Windows" },
       "cacheVariables": {
-        "CMAKE_C_COMPILER": "clang-cl",
-        "CMAKE_CXX_COMPILER": "clang-cl",
+        "CMAKE_C_COMPILER": "C:/Program Files/LLVM/bin/clang-cl.exe",
+        "CMAKE_CXX_COMPILER": "C:/Program Files/LLVM/bin/clang-cl.exe",
         "VCPKG_TARGET_TRIPLET": "x64-windows"
+      },
+      "environment": {
+        "PATH": "C:/Program Files/LLVM/bin;$penv{PATH}"
       }
     },
     {

@@ -12,7 +12,12 @@
       "Bash(clang-cl --version)",
       "Bash(cmake --version)",
       "Bash(ninja --version)",
-      "Bash(cmake --preset windows-clang)"
+      "Bash(cmake --preset windows-clang)",
+      "Bash(rm -rf build)",
+      "Bash(\"C:/Program Files/CMake/bin/cmake.exe\" --preset windows-clang)",
+      "Bash(\"C:/Program Files/CMake/bin/cmake.exe\" --build --preset windows-clang)",
+      "Bash(\"C:/Program Files/CMake/bin/cmake.exe\" --build build --target test)",
+      "Bash(\"C:/Program Files/CMake/bin/ctest.exe\" --preset windows-clang)"
     ]
   }
 }
