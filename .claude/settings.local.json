@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(where gcc *)",
+      "Bash(where clang *)",
+      "Bash(where cmake *)",
+      "Bash(where make *)",
+      "Bash(where ninja *)",
+      "Bash(winget install *)",
+      "Bash(git submodule *)",
+      "Bash(export PATH=\"/c/Program Files/LLVM/bin:/c/Program Files/CMake/bin:/c/Users/Mega Gengar/AppData/Local/Microsoft/WinGet/Packages/Ninja-build.Ninja_Microsoft.Winget.Source_8wekyb3d8bbwe:$PATH\")",
+      "Bash(clang-cl --version)",
+      "Bash(cmake --version)",
+      "Bash(ninja --version)",
+      "Bash(cmake --preset windows-clang)"
+    ]
+  }
+}

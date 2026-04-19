@@ -14,12 +14,16 @@ set(CMAKE_CXX_EXTENSIONS OFF)          # -std=c++20, not -std=gnu++20
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # ── Warnings (treat your code like it's going to prod) ────────────
-add_compile_options(
-    -Wall -Wextra -Wpedantic
-    -Wshadow -Wconversion -Wsign-conversion
-    -Wnull-dereference -Wdouble-promotion
-    -Wformat=2
-)
+if(MSVC)
+    add_compile_options(/W4 /permissive-)
+else()
+    add_compile_options(
+        -Wall -Wextra -Wpedantic
+        -Wshadow -Wconversion -Wsign-conversion
+        -Wnull-dereference -Wdouble-promotion
+        -Wformat=2
+    )
+endif()
 
 # ── Main executable ───────────────────────────────────────────────
 add_executable(low-latency src/main.cpp)

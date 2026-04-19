@@ -1,44 +1,55 @@
-# ── Paths ─────────────────────────────────────────────────────────
-LLVM_BIN     := /opt/homebrew/opt/llvm/bin
-CLANG_FORMAT := $(LLVM_BIN)/clang-format
-CLANG_TIDY   := $(LLVM_BIN)/clang-tidy
-VCPKG_ROOT   := $(CURDIR)/vcpkg
-BUILD_DIR    := build
+# Cross-platform wrapper around CMake presets.
+# Auto-picks a preset based on the host OS. Override with: make build PRESET=linux-clang
 
-# ── Targets ───────────────────────────────────────────────────────
+ifeq ($(OS),Windows_NT)
+    PRESET ?= windows-clang
+    BIN_EXT := .exe
+else
+    UNAME_S := $(shell uname -s)
+    ifeq ($(UNAME_S),Darwin)
+        PRESET ?= macos-clang
+    else
+        PRESET ?= linux-clang
+    endif
+    BIN_EXT :=
+endif
 
-.PHONY: build run clean format lint test configure
+BUILD_DIR := build
 
-## configure: run CMake configure step (vcpkg toolchain)
+.PHONY: configure build run test clean format lint bootstrap help
+
+## configure: run CMake configure step for the current OS preset
 configure:
-	cmake -B $(BUILD_DIR) \
-		-DCMAKE_TOOLCHAIN_FILE=$(VCPKG_ROOT)/scripts/buildsystems/vcpkg.cmake \
-		-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+	cmake --preset $(PRESET)
 
-## build: configure + compile everything
+## build: configure + compile
 build: configure
-	cmake --build $(BUILD_DIR) -j $$(sysctl -n hw.ncpu)
+	cmake --build --preset $(PRESET)
 
 ## run: build and run the main binary
 run: build
-	./$(BUILD_DIR)/low-latency
+	./$(BUILD_DIR)/low-latency$(BIN_EXT)
 
 ## test: build and run all unit tests
 test: build
-	ctest --test-dir $(BUILD_DIR) --output-on-failure
+	ctest --preset $(PRESET)
 
 ## clean: nuke the build directory
 clean:
-	rm -rf $(BUILD_DIR)
+	cmake -E rm -rf $(BUILD_DIR)
 
-## format: auto-format all C++ source files
+## format: auto-format all C++ sources with clang-format (must be on PATH)
 format:
-	find src include tests -name '*.cpp' -o -name '*.hpp' | xargs $(CLANG_FORMAT) -i
+	cmake -E chdir . clang-format -i $(shell cmake -E ls src include tests 2>/dev/null || echo)
 
-## lint: run clang-tidy on all source files
+## lint: clang-tidy over src + tests (reads compile_commands.json from $(BUILD_DIR))
 lint: build
-	find src tests -name '*.cpp' | xargs $(CLANG_TIDY) -p $(BUILD_DIR)
+	clang-tidy -p $(BUILD_DIR) src/*.cpp tests/*.cpp
 
-## help: show this help
+## bootstrap: install vcpkg deps declared in vcpkg.json (first-time setup)
+bootstrap:
+	cmake --preset $(PRESET)
+
+## help: list targets
 help:
 	@grep -E '^##' Makefile | sed 's/## //'
