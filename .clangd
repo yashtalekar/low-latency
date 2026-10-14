@@ -5,7 +5,8 @@ CompileFlags:
   CompilationDatabase: build
 
 Diagnostics:
-  ClangTidy: true
+  ClangTidy:
+    FastCheckFilter: None
 
 InlayHints:
   Enabled: true

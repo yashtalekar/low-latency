@@ -9,6 +9,7 @@ project(low-latency
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)          # -std=c++20, not -std=gnu++20
+set(CMAKE_CXX_SCAN_FOR_MODULES OFF)    # no C++20 modules; avoids needing clang-scan-deps
 
 # ── Export compile_commands.json for clangd ───────────────────────
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
