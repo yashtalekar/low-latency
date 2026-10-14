@@ -1,6 +1,8 @@
+#include <array>
 #include <atomic>
 #include <cstddef>
 #include <iostream>
+#include <optional>
 
 template <class T, std::size_t N>
 class CircBuffer {
@@ -9,6 +11,16 @@ class CircBuffer {
     std::size_t head_ = 0;
     std::size_t tail_ = 0;
     std::size_t count_ = 0;
+
+    size_t modularIncrement(size_t n, size_t modulo) {
+        if (n == modulo - 1) {
+            n = 0;
+        } else {
+            ++n;
+        }
+
+        return n;
+    }
 
    public:
     // push, pop, size, empty
@@ -23,14 +35,15 @@ class CircBuffer {
         tail_ = modularIncrement(tail_, N);
     }
 
-    size_t modularIncrement(size_t n, size_t modulo) {
-        if (n == modulo - 1) {
-            n = 0;
-        } else {
-            ++n;
+    std::optional<T> pop() {
+        if (count_ == 0) {
+            return std::nullopt;
         }
+        T ret_val = data_[head_];
 
-        return n;
+        head_ = modularIncrement(head_, N);
+        --count_;
+        return ret_val;
     }
 
     void pop(const T& a) {}
