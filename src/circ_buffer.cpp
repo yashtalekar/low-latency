@@ -46,5 +46,7 @@ class CircBuffer {
         return ret_val;
     }
 
-    void pop(const T& a) {}
+    [[nodiscard]] std::size_t size() const { return count_; }
+
+    [[nodiscard]] bool empty() const { return count_ == 0; }
 };
