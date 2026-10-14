@@ -1,9 +1,10 @@
+#pragma once
+
 #include <array>
-#include <atomic>
 #include <cstddef>
-#include <iostream>
 #include <optional>
 
+namespace low_latency {
 template <class T, std::size_t N>
 class CircBuffer {
    private:
@@ -23,7 +24,7 @@ class CircBuffer {
     }
 
    public:
-    // push, pop, size, empty
+    // push, pop, size, empty, clear
 
     void push(const T& a) {
         if (count_ == N) {
@@ -49,4 +50,11 @@ class CircBuffer {
     [[nodiscard]] std::size_t size() const { return count_; }
 
     [[nodiscard]] bool empty() const { return count_ == 0; }
+
+    void clear() {
+        head_ = 0;
+        tail_ = 0;
+        count_ = 0;
+    }
 };
+}  // namespace low_latency
