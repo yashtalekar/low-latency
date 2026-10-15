@@ -3,6 +3,7 @@
 #include <array>
 #include <cstddef>
 #include <optional>
+#include <utility>
 
 namespace low_latency {
 template <class T, std::size_t N>
@@ -13,7 +14,7 @@ class CircBuffer {
     std::size_t tail_ = 0;
     std::size_t count_ = 0;
 
-    size_t modularIncrement(size_t n, size_t modulo) {
+    static std::size_t modularIncrement(std::size_t n, std::size_t modulo) {
         if (n == modulo - 1) {
             n = 0;
         } else {
@@ -55,6 +56,23 @@ class CircBuffer {
         head_ = 0;
         tail_ = 0;
         count_ = 0;
+    }
+
+    [[nodiscard]] std::optional<T> peek() const {
+        if (count_ == 0) {
+            return std::nullopt;
+        }
+        return data_[head_];
+    }
+
+    void push(T&& a) {
+        if (count_ == N) {
+            head_ = modularIncrement(head_, N);
+        } else {
+            ++count_;
+        }
+        data_[tail_] = std::move(a);
+        tail_ = modularIncrement(tail_, N);
     }
 };
 }  // namespace low_latency
