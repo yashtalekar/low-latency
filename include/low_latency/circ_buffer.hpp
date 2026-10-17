@@ -41,7 +41,7 @@ class CircBuffer {
         if (count_ == 0) {
             return std::nullopt;
         }
-        T ret_val = data_[head_];
+        T ret_val = std::move(data_[head_]);
 
         head_ = modularIncrement(head_, N);
         --count_;
